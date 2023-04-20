@@ -29,6 +29,7 @@
     },
     {
       "lean": "lemma add_assoc (a b c : mynat) : (a + b) + c = a + (b + c) :=\n",
+      "isSolved": true,
       "editorText": "induction c with a ha,\n  rw add_zero,\n  rw add_zero,\n  refl,\n\nrw add_succ,\nrw add_succ,\nrw add_succ,\nrw ha,\nrefl"
     },
     {
@@ -48,6 +49,7 @@
     },
     {
       "lean": "lemma add_right_comm (a b c : mynat) : a + b + c = a + c + b :=\n",
+      "isSolved": true,
       "editorText": "rw add_comm a b,\nrw add_comm (a + c),\nrw add_assoc,\nrefl\n"
     },
     {
@@ -357,69 +359,92 @@
     },
     {
       "lean": "theorem mul_left_cancel (a b c : mynat) (ha : a ≠ 0) : a * b = a * c → b = c :=\n",
-      "editorText": "induction a with n hn,\nsorry,\nrw succ_mul,\nrw succ_mul,\n"
+      "editorText": "induction c with d hd generalizeng b,\nsorry,\nintro h,\nrw h at hd,\nrw mul_succ at hd,\n"
     },
     {
       "lean": "lemma one_add_le_self (x : mynat) : x ≤ 1 + x :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "use 1,\nrwa add_comm 1 x"
     },
-    { "lean": "lemma le_refl (x : mynat) : x ≤ x :=\n", "editorText": "sorry" },
+    {
+      "lean": "lemma le_refl (x : mynat) : x ≤ x :=\n",
+      "isSolved": true,
+      "editorText": "use 0,\nrefl"
+    },
     {
       "lean": "theorem le_succ (a b : mynat) : a ≤ b → a ≤ (succ b) :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "  intro h,\n  cases h with c hc,\n  rw hc,\n  use (c + 1),\n  refl,\n"
     },
-    { "lean": "lemma zero_le (a : mynat) : 0 ≤ a :=\n", "editorText": "sorry" },
+    {
+      "lean": "lemma zero_le (a : mynat) : 0 ≤ a :=\n",
+      "isSolved": true,
+      "editorText": "induction a with n hn,\nrefl,\nexact le_succ 0 n (hn),"
+    },
     {
       "lean": "theorem le_trans (a b c : mynat) (hab : a ≤ b) (hbc : b ≤ c) : a ≤ c :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "cases hab with h hc,\ncases hbc with n hn,\nrw hc at hn,\nuse h + n,\nrw ← add_assoc,\nexact hn"
     },
     {
       "lean": "theorem le_antisymm (a b : mynat) (hab : a ≤ b) (hba : b ≤ a) : a = b :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "cases hab with h hh,\ncases hba with n hn,\nrw hh at hn,\nrw  add_assoc at hn,\nsymmetry at hn,\nhave j := eq_zero_of_add_right_eq_self hn,\n\nhave p := add_right_eq_zero j,\nrw p at hh,\nrw add_zero at hh,\nsymmetry at hh,\nexact hh"
     },
     {
       "lean": "lemma le_zero (a : mynat) (h : a ≤ 0) : a = 0 :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "cases h with n hn,\nsymmetry at hn,\nhave j := add_right_eq_zero hn,\nexact j"
     },
     {
       "lean": "lemma succ_le_succ (a b : mynat) (h : a ≤ b) : succ a ≤ succ b :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "cases h with n hn,\nrw hn,\nuse n,\nrw succ_add,\nrefl"
     },
     {
       "lean": "theorem le_total (a b : mynat) : a ≤ b ∨ b ≤ a :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "induction a with n hn,\nleft,\nexact zero_le b,\nrw succ_eq_add_one,\ncases hn,\ncases hn with j hj,\nrw hj,\ninduction j with k hk,\nright,\nsimp,\nuse 1,\nrefl,\nrw succ_eq_add_one,\nleft,\nuse k,\nsimp,\nright,\nrw ← succ_eq_add_one,\nexact le_succ b n hn,\n"
     },
     {
       "lean": "lemma le_succ_self (a : mynat) : a ≤ succ a :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "use 1,\nrwa succ_eq_add_one"
     },
     {
       "lean": "theorem add_le_add_right {a b : mynat} : a ≤ b → ∀ t, (a + t) ≤ (b + t) :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "intro h,\nintro t,\ninduction t with n hn,\nrwa [add_zero, add_zero],\nrw add_succ,\nrw add_succ,\napply succ_le_succ,\n\ncases hn with j hj,\nrw hj,\nuse j,\nrefl"
     },
     {
       "lean": "theorem le_of_succ_le_succ (a b : mynat) : succ a ≤ succ b → a ≤ b :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "intro h,\ninduction a with n hn,\nexact zero_le b,\ncases h with j jk,\nrw succ_add at jk,\nrw succ_eq_succ_iff at jk,\nrw jk,\nuse j,\nrefl\n"
     },
     {
       "lean": "theorem not_succ_le_self (a : mynat) : ¬ (succ a ≤ a) :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "intro j,\nrw succ_eq_add_one at j,\n\ncases j with k hk,\nrw ← add_zero a at hk,\nrw add_assoc a 0 1 at hk,\nrw add_assoc at hk,\nhave g := add_left_cancel a 0 _ (hk),\nrw zero_add at g,\nrw add_comm at g,\nrw add_one_eq_succ at g,\n\nsymmetry at g,\nexact succ_ne_zero k (g)"
     },
     {
       "lean": "theorem add_le_add_left {a b : mynat} (h : a ≤ b) (t : mynat) :\n  t + a ≤ t + b :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "cases h with k hk,\nrw hk,\nuse k,\nrw add_assoc,\nrefl"
     },
     {
       "lean": "lemma lt_aux_one (a b : mynat) : a ≤ b ∧ ¬ (b ≤ a) → succ a ≤ b :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "intro h,\ncases h with l r,\ncases l with c hc,\nrw succ_eq_add_one,\ninduction c with j hj,\nexfalso,\nrw add_zero at hc,\nrw ← add_zero b at hc,\nsymmetry at hc,\nrw le_iff_exists_add at r,\napply r,\nuse 0,\nexact hc,\n\nrw hc,\nrw add_one_eq_succ,\nuse j,\nrw add_succ,\nrw succ_add,\nrefl\n\n"
     },
     {
       "lean": "lemma lt_aux_two (a b : mynat) : succ a ≤ b → a ≤ b ∧ ¬ (b ≤ a) :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "intro h,\nsplit,\nrw succ_eq_add_one at h,\ncases h with k hk,\nuse 1 + k,\nrw ← add_assoc,\nexact hk,\n\nintro j,\ncases h with k hk,\nrw hk at j,\nrw succ_eq_add_one at j,\ncases j with l hl,\n\nrw ← add_zero a at hl,\nrepeat{rw add_assoc at hl},\n\nhave g := add_left_cancel a 0 _ (hl),\nrwa [zero_add, add_comm, add_one_eq_succ] at g,\nsymmetry at g,\nexact succ_ne_zero (k + l) (g)"
     },
     {
       "lean": "lemma lt_iff_succ_le (a b : mynat) : a < b ↔ succ a ≤ b :=\n",
-      "editorText": "sorry"
+      "isSolved": true,
+      "editorText": "split,\napply lt_aux_one,\nintro h,\ncases lt_aux_two a b (h) with l r,\nsplit,\nexact l,\nexact r"
     }
   ]
 }
